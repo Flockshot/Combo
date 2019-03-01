@@ -64,7 +64,7 @@ public class ComboPlugin extends JavaPlugin
 
 	//public HashMap<String, String> Combos = new HashMap<String, String>();
 	//public HashMap<UUID, String> startedcombo = new HashMap<UUID, String>();
-	public ComboActionBar comboActionBar;
+    public ComboActionBar comboActionBar;
 	
 	private ComboManager comboManage;
 	//private TimerManager timerManage;
@@ -91,7 +91,7 @@ public class ComboPlugin extends JavaPlugin
 		setSubActionManager(new SubActionManager(this));
 		setRequirementManager(new RequirementManager(this));
 		setExecutableManager(new ExecutableManager(this));
-				
+            	
 		registerAllExecutables();
 		registerAllRequirements();
 
@@ -113,9 +113,9 @@ public class ComboPlugin extends JavaPlugin
 		getServer().getPluginManager().registerEvents(new InteractEntityEvent(this), this);
 		
 		if(Bukkit.getVersion().contains("1.8"))
-			getServer().getPluginManager().registerEvents(new InteractEvent1_8(this), this);		
+            getServer().getPluginManager().registerEvents(new InteractEvent1_8(this), this);		
 		else
-			getServer().getPluginManager().registerEvents(new InteractEvent(this), this);
+            getServer().getPluginManager().registerEvents(new InteractEvent(this), this);
 	}
 	
     private void registerAllExecutables()
@@ -156,9 +156,7 @@ public class ComboPlugin extends JavaPlugin
         getRequirementManager().register(new StringContains());
         getRequirementManager().register(new StringContainsIgnoreCase());
     }
-	
-    
-    
+	    
 	public ActionManager getActionManager() {
         return actionManage;
     }
@@ -183,47 +181,47 @@ public class ComboPlugin extends JavaPlugin
 		ActionBar actionbar;
 		if(ver.contains("1.8.4") || ver.contains("1.8.5") || ver.contains("1.8.6") || ver.contains("1.8.7") || ver.contains("1.8.8") || ver.contains("1.8.9"))
 		{
-			actionbar = new ActionBarv1_8_R3();
+            actionbar = new ActionBarv1_8_R3();
 		}
 		else if(ver.contains("1.8.3"))
 		{
-			actionbar = new ActionBarv1_8_R2();
+            actionbar = new ActionBarv1_8_R2();
 		}
 		else if(ver.contains("1.8"))
 		{
-			actionbar = new ActionBarv1_8_R1();
+            actionbar = new ActionBarv1_8_R1();
 		}
 		else if(ver.contains("1.9.4"))
 		{
-			actionbar = new ActionBarv1_9_R2();
+            actionbar = new ActionBarv1_9_R2();
 		}
 		else if(ver.contains("1.9"))
 		{
-			actionbar = new ActionBarv1_9_R1();
+            actionbar = new ActionBarv1_9_R1();
 		}		
 		else if(ver.contains("1.10"))
 		{
-			actionbar = new ActionBarv1_10_R1();
+            actionbar = new ActionBarv1_10_R1();
 		}
 		else if(ver.contains("1.11"))
 		{
-			actionbar = new ActionBarv1_11_R1();
+            actionbar = new ActionBarv1_11_R1();
 		}
 		else if(ver.contains("1.12")) 
 		{
-			actionbar = new ActionBarv1_12_R1();
+            actionbar = new ActionBarv1_12_R1();
 		}
 		else if(ver.contains("1.13.1") || ver.contains("1.13.2"))
 		{
-			actionbar = new ActionBarv1_13_R2();
+            actionbar = new ActionBarv1_13_R2();
 		}
 		else if(ver.contains("1.13"))
 		{
-			actionbar = new ActionBarv1_13_R1();
+            actionbar = new ActionBarv1_13_R1();
 		}
 		else
 		{
-			actionbar = null;
+            actionbar = null;
 		}
 		comboActionBar = new ComboActionBar(this, actionbar);		
 	}
@@ -260,9 +258,9 @@ public class ComboPlugin extends JavaPlugin
 		String cmd = cmdvalue.toLowerCase();
 		
 		try {
-			Commands.ProcessCommand(sender, command, cmd, args);
+            Commands.ProcessCommand(sender, command, cmd, args);
 		} catch (IOException e) {
-			e.printStackTrace();
+            e.printStackTrace();
 		}
 		return false;
 	}

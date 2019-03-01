@@ -36,8 +36,8 @@ public class ActionManager
 		
 		for(File file : files)
 		{
-			List<Action> actionsFromFile = getActions(YamlConfiguration.loadConfiguration(file));
-			actions.addAll(actionsFromFile);
+            List<Action> actionsFromFile = getActions(YamlConfiguration.loadConfiguration(file));
+            actions.addAll(actionsFromFile);
 		}
 	}
 	
@@ -48,27 +48,27 @@ public class ActionManager
 		Set<String> names = file.getConfigurationSection("").getKeys(false);
 		if(names!=null)
 		{
-			for(String name : names)
-			{
-				String itemID = file.contains(name+".Item") ? file.getString(name+".Item") : null;
-				int data = file.contains(name+".Data") ? file.getInt(name+".Data") : 1;
-				
-				ItemUtility iUtil = new ItemUtility();
-				ItemStack item = iUtil.generateItem(itemID, data);
-				
-				if(item==null)
-				{
-					plugin.getLogger().log(Level.SEVERE, ChatColor.DARK_RED+"Invalid Item of "+name+" in file"+file.getName());
-					continue;
-				}
-				
-				List<Requirement> globalReqs = plugin.getRequirementManager().getRequirements(file, name+".GlobalRequirements");
-				List<SubAction> subActions = plugin.getSubActionManager().getSubActions(file, name+".SubActions");
-				
-				Action action = new Action(name, item, globalReqs, subActions);
-				
-				acts.add(action);
-			}
+            for(String name : names)
+            {
+            	String itemID = file.contains(name+".Item") ? file.getString(name+".Item") : null;
+            	int data = file.contains(name+".Data") ? file.getInt(name+".Data") : 1;
+            	
+            	ItemUtility iUtil = new ItemUtility();
+            	ItemStack item = iUtil.generateItem(itemID, data);
+            	
+            	if(item==null)
+            	{
+                    plugin.getLogger().log(Level.SEVERE, ChatColor.DARK_RED+"Invalid Item of "+name+" in file"+file.getName());
+                    continue;
+            	}
+            	
+            	List<Requirement> globalReqs = plugin.getRequirementManager().getRequirements(file, name+".GlobalRequirements");
+            	List<SubAction> subActions = plugin.getSubActionManager().getSubActions(file, name+".SubActions");
+            	
+            	Action action = new Action(name, item, globalReqs, subActions);
+            	
+            	acts.add(action);
+            }
 		}
 		//TODO
 		return acts;		
@@ -81,21 +81,21 @@ public class ActionManager
 
 		for(Action act : finalActs)
 		{
-			SubAction subAct = act.getSubActionFromType(type);
-			if(subAct!=null)
-			{
-				if(plugin.getRequirementManager().passesRequirements(player, item, act.getGlobalRequirements()))
-				{					
-					if(plugin.getRequirementManager().passesRequirements(player, item, physical, subAct.getRequirements()))
-					{
-						plugin.getRequirementManager().startCooldownTimer(act.getGlobalRequirements(), player);
-						plugin.getRequirementManager().startCooldownTimer(subAct.getRequirements(), player);
-						
-						plugin.getExecutableManager().executeExecutables(player, subAct.getAcceptance());
-					}
-					return;
-				}
-			}							
+            SubAction subAct = act.getSubActionFromType(type);
+            if(subAct!=null)
+            {
+            	if(plugin.getRequirementManager().passesRequirements(player, item, act.getGlobalRequirements()))
+            	{                    
+                    if(plugin.getRequirementManager().passesRequirements(player, item, physical, subAct.getRequirements()))
+                    {
+                        plugin.getRequirementManager().startCooldownTimer(act.getGlobalRequirements(), player);
+                        plugin.getRequirementManager().startCooldownTimer(subAct.getRequirements(), player);
+                        
+                        plugin.getExecutableManager().executeExecutables(player, subAct.getAcceptance());
+                    }
+                    return;
+            	}
+            }                        	
 		}
 	}
 
@@ -106,16 +106,16 @@ public class ActionManager
 		
 		if(finalActs.size()>=1)
 		{
-			Action action = finalActs.get(0);
-			if(action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).count()>=1)
-			{
-				for(Requirement req : action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).collect(Collectors.toList()))
-				{
-					if(!req.passesRequirement(player, item))
-						return false;
-				}		
-			}
-			return true;
+            Action action = finalActs.get(0);
+            if(action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).count()>=1)
+            {
+            	for(Requirement req : action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).collect(Collectors.toList()))
+            	{
+                    if(!req.passesRequirement(player, item))
+                        return false;
+            	}
+            }
+            return true;
 		}
 		return false;		
 	}
