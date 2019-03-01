@@ -1,0 +1,8 @@
+main: me.flockshot.combo.ComboPlugin
+name: Combos
+description: Add extreme combos to the game and discover exiting new ways to survive
+version: 1.0
+authors: [Flockshot]
+softdepend: [PlaceholderAPI]
+commands:
+  

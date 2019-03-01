@@ -1,0 +1,44 @@
+Heal:
+  Name: "Wand"
+  Lore: 
+  - "This is a custom"
+  - "Second Line of Custom Lore"
+  Item: 322
+  Data: 1
+  RRR:
+    Perm: ""
+    Cooldown: "2m"
+    Effects:
+     - "BLINDNESS:100:1"
+    CCommands:
+     - ""
+    PCommands:
+     - ""
+  RRL:
+    Perm: ""
+    Cooldown: "2m"
+    Effects:
+     - "BLINDNESS:100:1"
+    CCommands:
+     - ""
+    PCommands:
+     - ""
+  RLL:
+    Perm: ""
+    Cooldown: "2m"
+    Effects:
+     - "BLINDNESS:100:1"
+    CCommands:
+     - ""
+    PCommands:
+     - ""
+  RLR:
+    Perm: ""
+    Cooldown: "2m"
+    Effects:
+     - "BLINDNESS:100:1"
+    CCommands:
+     - ""
+    PCommands:
+     - ""
+	 
