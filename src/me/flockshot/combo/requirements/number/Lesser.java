@@ -27,7 +27,6 @@ public class Lesser implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -37,9 +36,9 @@ public class Lesser implements Requirement {
 	public String getValue() {
 		return value;
 	}
-
 	@Override
-	public void setValue(Object value) {
+	public void setValue(Object value)
+	{
 		if(value instanceof String) this.value = (String) value;
 		else if(value instanceof Integer) this.value = ((Integer) value)+"";
 		else this.value = "";		
@@ -49,7 +48,6 @@ public class Lesser implements Requirement {
 	public String getCompareWith() {
 		return compareWith;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {
 		this.compareWith = (String) compareWith;
@@ -59,11 +57,9 @@ public class Lesser implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
-
 	}
 
 	@Override
@@ -71,7 +67,6 @@ public class Lesser implements Requirement {
 	{		
 		PlaceholderTranslator pt = new PlaceholderTranslator();
 		NumberUtility nUtil = new NumberUtility();
-		
 		
 		String value = pt.getTranslatedString(player, getValue());
 		String compare = pt.getTranslatedString(player, getCompareWith());
@@ -81,7 +76,8 @@ public class Lesser implements Requirement {
 			double val = Double.valueOf(value);
 			double comp = Double.valueOf(compare);
 			
-			if(val<comp) return true;
+			if(val<comp)
+			    return true;
 			else
 			{
 				getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));

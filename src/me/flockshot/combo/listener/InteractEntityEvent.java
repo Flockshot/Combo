@@ -26,15 +26,13 @@ public class InteractEntityEvent implements Listener
 		if(event.getDamager() instanceof Player)
 		{
 			Player player = (Player) event.getDamager();
-			//TODO ERASE
-			player.sendMessage(event.getCause()+"");
 			
 			if(player.hasPermission("combo.start"))
 			{				
 				if((event.getCause().equals(DamageCause.ENTITY_ATTACK) || event.getCause().equals(DamageCause.ENTITY_SWEEP_ATTACK)) && plugin.getConfig().getBoolean("allowPhysical"))
 				{
 					ItemStack item = Bukkit.getVersion().contains("1.8") ?  player.getInventory().getItemInHand() : player.getInventory().getItemInMainHand();
-					plugin.getComboManager().registerCombo(player, "left", item, player.isSneaking());					
+					plugin.getComboManager().registerCombo(player, "pleft", item, player.isSneaking());					
 				}
 			}
 		}

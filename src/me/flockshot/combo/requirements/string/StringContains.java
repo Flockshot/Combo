@@ -26,7 +26,6 @@ public class StringContains implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -36,7 +35,6 @@ public class StringContains implements Requirement {
 	public String getValue() {
 		return value;
 	}
-
 	@Override
 	public void setValue(Object value) {
 		this.value = (String) value;
@@ -46,7 +44,6 @@ public class StringContains implements Requirement {
 	public String getCompareWith() {
 		return compareWith;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {
 		this.compareWith = (String) compareWith;
@@ -56,11 +53,9 @@ public class StringContains implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
-
 	}
 
 	@Override
@@ -70,16 +65,12 @@ public class StringContains implements Requirement {
 		String val = pt.getTranslatedString(player, getValue());
 		String comp = pt.getTranslatedString(player, getCompareWith());
 		
-		
-		
-		if(val.contains(comp)) return true;
+		if(val.contains(comp))
+		    return true;
 		else
 		{
 			getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
 			return false;
 		}
 	}
-
-
-
 }

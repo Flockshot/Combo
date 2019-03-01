@@ -22,6 +22,5 @@ public interface Requirement
 	void setDenails(List<Executable> executables);
 	
 	boolean passesRequirement(Player player, ItemStack item);
-	
-	//boolean passesValidity(Object value);
+
 }

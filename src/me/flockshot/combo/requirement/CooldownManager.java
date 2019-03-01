@@ -1,6 +1,10 @@
 package me.flockshot.combo.requirement;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import me.flockshot.combo.utils.NumberUtility;
@@ -22,36 +26,41 @@ public class CooldownManager
 			return cooldown.get(uuid);
 		}
 		else return 0;
-	
-	
 	}
 	
-	public boolean containsCooldown(UUID uuid)
-	{
+	public String getConvertedCooldown(UUID uuid)
+	{		
+		Date date = new Date(getTimePassed(uuid));
+		DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SS");
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return formatter.format(date);		
+	}
+	
+	public long getTimePassed(UUID uuid) {
+		return System.currentTimeMillis()-getCooldown(uuid);
+	}
+	
+	public boolean containsCooldown(UUID uuid) {
 		return cooldown.containsKey(uuid);
-	}
-	
-	public void putCooldown(UUID uuid)
-	{
+	}	
+	public void putCooldown(UUID uuid) {
 		cooldown.put(uuid, System.currentTimeMillis());
+	}	
+	public void removeCooldown(UUID uuid) {
+		cooldown.remove(uuid);
 	}
 	
 	public boolean cooldownPassed(UUID uuid)
 	{
 		if(containsCooldown(uuid))
 		{
-			long difference = System.currentTimeMillis()-getCooldown(uuid);
-			if(difference<cooldownInMs)
+			if(getTimePassed(uuid)<cooldownInMs)
 			{			
 				return false;
 			}
-			else return true;
 		}
-		else return true;
+		return true;
 	}
-	
-	
-	
 	
 	private int getCooldownInSecs(String cooldown)
 	{

@@ -20,8 +20,9 @@ public class Combo
 	private String secondaction = "";
 	private String thirdaction = "";
 	private boolean shift;
+	private boolean physical = false;
 	private ComboType type;
-	ComboPlugin plugin;
+	private ComboPlugin plugin;
 	
 	public Combo(ComboPlugin plugin, Player plr, ItemStack item, String action, boolean shift)
 	{
@@ -35,134 +36,85 @@ public class Combo
 		
 		PlayerPreComboEvent comboevent = new PlayerPreComboEvent(player, false);
 		Bukkit.getPluginManager().callEvent(comboevent);
-		if (comboevent.isCancelled())
+		if(comboevent.isCancelled())
 		{
-			return;
+			plugin.getComboManager().removeComboinProgress(plr.getUniqueId());
 		}
 	}
-	
-	
-	
-	
-	
-	public Player getPlayer()
-	{
+
+	public Player getPlayer() {
 		return player;
 	}
-
-	void setPlayer(Player plr)
-	{
+	void setPlayer(Player plr) {
 		player = plr;
 	}
 
-	public ItemStack getItem()
-	{
+	public ItemStack getItem() {
 		return item;
-	}
-	
-	
-	void setItem(ItemStack item)
-	{
+	}	
+	void setItem(ItemStack item) {
 		this.item = item;
 	}
-
 	
-	public String getFirstAction()
-	{
+	public String getFirstAction() {
 		return firstaction;
 	}
 	
-	void setFirstAction(String action)
-	{
+	void setFirstAction(String action) {
 		firstaction = action + " ";		
 	}
 	
-	public String getSecondAction()
-	{
+	public String getSecondAction() {
 		return secondaction;
 	}	
-	
-	void setSecondAction(String action)
-	{
+	void setSecondAction(String action) {
 		secondaction = action + " ";
 	}
 	
-	public String getThirdAction()
-	{
+	public String getThirdAction() {
 		return thirdaction;
 	}
-	
 	void setThirdAction(String action)
 	{
 		thirdaction = action;
 		
 		setType(convertToType());
-		//TODO uncheck or not?? cuz comboManager has callEvent
-		//callEvent();
 	}
 	
 	private ComboType convertToType()
 	{
 		char first = getFirstAction().toUpperCase().charAt(0);
 		char second = getSecondAction().toUpperCase().charAt(0);
-		char third = getThirdAction().toUpperCase().charAt(0);
-		
-		//plugin.getLogger().log(Level.SEVERE, ChatColor.DARK_RED+""+first+second+third);
+		char third = getThirdAction().toUpperCase().charAt(0);		
+
 		return isShift() ? ComboType.valueOf("S"+first+second+third) : ComboType.valueOf(""+first+second+third+"");
-		//ComboType.
 	}
 
-
-
-
-
-	public String getWholeCombo()
-	{
+	public String getWholeCombo() {
 		return getFirstAction() + getSecondAction() + getThirdAction();
 	}
 	
 	void callEvent()
-	{
-		
+	{		
 		PlayerComboEvent comboevent = new PlayerComboEvent(player, convertToType(), this);
 		Bukkit.getPluginManager().callEvent(comboevent);
 		if(comboevent.isCancelled())
-		{
 			return;
-		}		
 		
-		processEvent();
-		
+		processEvent();		
 	}
-
-
-
-
-
 	private void processEvent()
 	{
-		plugin.getActionManager().callAction(getType(), getPlayer(), getItem());
+		plugin.getActionManager().callAction(getType(), getPlayer(), getItem(), isPhysical());
 	}
-
-
-
-
-
+	
+	
 	public boolean isShift() {
 		return shift;
 	}
-
-
-
-
-
 	public void setShift(boolean shift) {
 		this.shift = shift;
 	}
-
-
-
-
 
 	public ComboType getType() {
 		return type;
@@ -171,22 +123,18 @@ public class Combo
 		this.type = type;
 	}
 
-
-
-
-
 	public ItemMeta getItemMeta() {
 		return meta;
 	}
-
-
-
-
-
 	public void setItemMeta(ItemMeta meta) {
 		this.meta = meta;
 	}
+	
 
-
-
+	public boolean isPhysical()	{
+		return physical;
+	}
+	public void setPhysical(boolean physical) {
+		this.physical = physical;
+	}
 }

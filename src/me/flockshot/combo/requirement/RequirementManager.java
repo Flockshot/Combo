@@ -17,11 +17,11 @@ import me.flockshot.combo.requirements.item.ItemNameContains;
 import me.flockshot.combo.requirements.item.ItemNameContainsIgnoreCase;
 import me.flockshot.combo.requirements.item.ItemNameEquals;
 import me.flockshot.combo.requirements.item.ItemNameEqualsIgnoreCase;
+import me.flockshot.combo.requirements.player.Cooldown;
+import me.flockshot.combo.requirements.player.StriclyPhysical;
 
 public class RequirementManager 
 {
-	
-	
 	ComboPlugin plugin;
 	HashMap<String, Requirement> registered = new HashMap<String, Requirement>();
 	
@@ -49,7 +49,7 @@ public class RequirementManager
 				
 				if(value==null || requirement==null || !(value instanceof String || value instanceof List<?> || value instanceof Integer))
 				{
-					plugin.getLogger().log(Level.SEVERE, "§4Invalid Requirement "+fullPath+" in "+file.getName());
+					plugin.getLogger().log(Level.SEVERE, "Invalid Requirement "+fullPath+" in "+file.getName());
 					continue;
 				}
 				
@@ -72,8 +72,7 @@ public class RequirementManager
 		return (req instanceof ItemLoreEquals || req instanceof ItemLoreEqualsIgnoreCase || req instanceof ItemNameEquals || req instanceof ItemNameEqualsIgnoreCase || req instanceof ItemNameContains||req instanceof ItemNameContainsIgnoreCase);		
 	}
 	
-	public boolean passesResult(Player player, ItemStack item, Requirement req)
-	{
+	public boolean passesResult(Player player, ItemStack item, Requirement req)	{
 		return req.passesRequirement(player, item);
 	}
 
@@ -81,20 +80,9 @@ public class RequirementManager
 	{				
 		for(Requirement req : reqs)
 		{
-			//TODO ERASE
-			/*
-			Bukkit.broadcastMessage(req.getIdentifier()+" "+req.getName()+"  "+req.getValue()+"  "+req.getCompareWith()+" "+req.getDenial());
-			
-			for(Executable exe : req.getDenial())
-			{
-				System.out.println("EXE " + exe.getIdentifier()+" "+exe.getValue());
-				
-			}
-			*/
 			if(!req.passesRequirement(player, item))
 				return false;
 		}
-		//return getGlobalRequirements().stream().filter(req -> !req.passesRequirement(player, item)).count() == 0;
 		return true;
 	}
 	
@@ -111,9 +99,29 @@ public class RequirementManager
 			}
 		return null;
 	}
-	public void register(Requirement req)
-	{
+	
+	public void register(Requirement req) {
 		registered.putIfAbsent(req.getIdentifier().toLowerCase(), req);
+	}
+
+	public void startCooldownTimer(List<Requirement> reqs, Player player)
+	{
+		reqs.stream().filter(req -> req instanceof Cooldown).forEach(req -> ((Cooldown)req).startCooldown(player.getUniqueId()));		
+	}
+
+	public boolean passesRequirements(Player player, ItemStack item, boolean physical, List<Requirement> requirements)
+	{
+		for(Requirement req : requirements)
+		{
+			if(req instanceof StriclyPhysical)
+				 if(!((StriclyPhysical)req).passesRequirement(player, physical))
+					 return false;
+			
+			if(!req.passesRequirement(player, item))
+				return false;
+		}
+
+		return true;
 	}
 
 

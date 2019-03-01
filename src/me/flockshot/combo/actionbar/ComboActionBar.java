@@ -14,7 +14,6 @@ import me.flockshot.combo.utils.ColorTranslator;
 
 public class ComboActionBar
 {
-
 	private ActionBar actionBar;
 	private ComboPlugin plugin;
 	private HashMap<UUID, Integer> actionTimerID = new HashMap<UUID, Integer>();
@@ -56,7 +55,6 @@ public class ComboActionBar
 			    
 			    if(combo.getThirdAction().equals("right")) formattedAction = formattedR;
 			    else formattedAction = formattedL;
-
 			    
 			    if(actionNum.equals("first"))
 			    {
@@ -75,7 +73,7 @@ public class ComboActionBar
 			    	duration = plugin.getConfig().getInt("actionBardurationThird");
 					text = plugin.getConfig().getString("actionBarFormatThird");			
 			    	text = text.replaceAll("%firstaction%", formattedActionFirst).replaceAll("%secondaction%", formattedActionSecond).replaceAll("%thirdaction%", formattedAction);
-			    }			    
+			    }  
 			    
 			    if(!actionNum.equals("first"))
 			    {
@@ -85,8 +83,7 @@ public class ComboActionBar
 			    		actionTimerID.remove(uuid);
 			    	}
 			    	actionBar.sendActionBar(player, "       ");
-			    }
-			    
+			    }			    
 			    sendActionBar(player, new ColorTranslator().getTranslatedString(text), duration);
 			}
 		}

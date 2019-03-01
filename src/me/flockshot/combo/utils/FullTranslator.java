@@ -12,8 +12,7 @@ public class FullTranslator
 		ColorTranslator ct = new ColorTranslator();
 		PlaceholderTranslator pt = new PlaceholderTranslator();
 		
-		return ct.getTranslatedString(pt.getTranslatedString(player, string));
-		
+		return ct.getTranslatedString(pt.getTranslatedString(player, string));		
 	}
 	
 	public List<String> getTranslatedList(Player player, List<String> list)
@@ -21,12 +20,9 @@ public class FullTranslator
 		List<String> translatedList = new ArrayList<String>();
 		
 		if(list!=null && !list.isEmpty())
-		{			
 			for(String line : list)
-			{
 				translatedList.add(getTranslatedString(player, line));
-			}
-		}
+		
 		return translatedList;
 	}
 }

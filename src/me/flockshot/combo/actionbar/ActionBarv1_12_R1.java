@@ -11,9 +11,7 @@ public class ActionBarv1_12_R1 implements ActionBar
 	@Override
 	public void sendActionBar(Player player, String text)
 	{
-		// TODO Auto-generated method stub
         PacketPlayOutChat packet = new PacketPlayOutChat(ChatSerializer.a("{\"text\":\"" + text + "\"}"), (byte) 2);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
-		
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);		
 	}
 }

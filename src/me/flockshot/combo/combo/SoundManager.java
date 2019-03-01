@@ -2,7 +2,6 @@ package me.flockshot.combo.combo;
 
 import java.util.logging.Level;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -21,7 +20,6 @@ public class SoundManager
 	{
 		this.plugin = plugin;
 		
-	    //if(Sound.values().toString().toLowerCase().contains(plugin.getConfig().getString("defaultSound").toLowerCase()))
 		if(Sound.valueOf(plugin.getConfig().getString("defaultSound"))!=null)
     	{
 	    	sound = Sound.valueOf(plugin.getConfig().getString("defaultSound"));
@@ -30,14 +28,13 @@ public class SoundManager
     	}
 	    else
 	    {
-    		//TODO DO it with logger
-    		plugin.getLogger().log(Level.SEVERE, ChatColor.DARK_RED + "INVALID SOUND IN CONFIG");
+    		plugin.getLogger().log(Level.SEVERE, "INVALID SOUND IN CONFIG");
     		playSound = false;
 	    }
 	}
 	
 	void playSound(Player player)
-	{    	
+	{
     	FileConfiguration plrConfig = plugin.getPlayerConfig(player.getUniqueId());
     	
 		if(plrConfig.contains("SoundToggle"))

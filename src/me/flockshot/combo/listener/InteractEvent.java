@@ -21,14 +21,12 @@ public class InteractEvent implements Listener
 	
 	@EventHandler
 	public void onAction(PlayerInteractEvent event)
-	{
-		
+	{		
 		Player player = event.getPlayer();		
 		if(event.getHand()!=null)
 		{
 			if(event.getHand().equals(EquipmentSlot.HAND))
 			{
-				//TODO ERASE
 				player.sendMessage(event.getAction()+"");
 				if(player.hasPermission("combo.start"))
 				{
@@ -37,16 +35,13 @@ public class InteractEvent implements Listener
 					if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.PHYSICAL))
 					{
 						if(!plugin.getConfig().getBoolean("allowPhysical") && event.getAction().equals(Action.PHYSICAL))
-						{
 							return;
-						}
-						action = "left";
 						
+						action = event.getAction().equals(Action.PHYSICAL) ? "pleft" : "left";						
 					}
 					else
-					{
 						action = "right";
-					}
+
 					ItemStack item = player.getInventory().getItemInMainHand();
 					plugin.getComboManager().registerCombo(player, action, item, player.isSneaking());
 				}

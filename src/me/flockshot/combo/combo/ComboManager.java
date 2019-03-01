@@ -21,30 +21,31 @@ public class ComboManager
 		soundManager = new SoundManager(plugin);
 	}
 
-
 	public void registerCombo(Player player, String action, ItemStack item, boolean isShift)
 	{
 	    UUID uuid = player.getUniqueId();
+	    boolean physical = true;
 	    
 	    if(item != null && !item.getType().equals(Material.AIR))
 	    {
-	    	//TODO REMOVE
-	    	//player.sendMessage(item.getTypeId()+":"+item.getItemMeta().);
 	    	if(plugin.getActionManager().actionRegisteredToItem(player, item))
 	    	{
+	    		physical = !action.toLowerCase().equals("left");
+	    		action = action.replace("p", "");   		
+	    		
 	    		if(startedCombo.containsKey(uuid))
 		    	{
 		    		Combo plrCombo = startedCombo.get(uuid);
+		    		plrCombo.setPhysical(physical);
 		    		
 		    		if(plrCombo.isShift() != isShift || !playerTimer.get(uuid).passesTimers())
 		    		{
 		    			removeComboinProgress(uuid);
 		    			registerCombo(player, action, item, isShift);
 		    			return;
-		    		}	    		
+		    		}		    	
 		    		
-		    		ItemMeta meta = item.getItemMeta();
-		    		
+		    		ItemMeta meta = item.getItemMeta();		    		
 		    		if(item.equals(plrCombo.getItem()) && plrCombo.getItemMeta().equals(meta))
 		    		{ 
 		    			soundManager.playSound(player);
@@ -55,9 +56,7 @@ public class ComboManager
 		    				startedCombo.put(uuid, plrCombo);
 		    				playerTimer.get(uuid).startSecondTimer();
 		            
-		    				//TODO
-		    				plugin.getComboActionBar().preActionBar(player, "second", startedCombo.get(uuid));
-		    				
+		    				plugin.getComboActionBar().preActionBar(player, "second", startedCombo.get(uuid));		    				
 		    			}
 		    			else
 		    			{
@@ -72,6 +71,7 @@ public class ComboManager
 		    	else
 		    	{
 		    		Combo plrCombo = new Combo(plugin, player, item, action, isShift);
+		    		plrCombo.setPhysical(physical);
 		    		startedCombo.put(uuid, plrCombo);
 		    		
 		    		playerTimer.get(uuid).startFirstTimer();

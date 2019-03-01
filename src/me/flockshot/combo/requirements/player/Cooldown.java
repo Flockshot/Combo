@@ -1,6 +1,7 @@
 package me.flockshot.combo.requirements.player;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +26,6 @@ public class Cooldown implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -35,21 +35,15 @@ public class Cooldown implements Requirement {
 	public CooldownManager getValue() {
 		return cooldown;
 	}
-	/*
-	public CooldownManager getCooldown() {
-		return cooldown;
-	}
-	*/
 	@Override
 	public void setValue(Object value) {
 		cooldown = new CooldownManager((String) value);
 	}
-
+	
 	@Override
 	public String getCompareWith() {
 		return null;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {		
 	}
@@ -58,24 +52,34 @@ public class Cooldown implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
-
 	}
 
 	@Override
 	public boolean passesRequirement(Player player, ItemStack item)
 	{		
-		if(getValue().cooldownPassed(player.getUniqueId())) return true;
+		if(getValue().cooldownPassed(player.getUniqueId()))
+		    return true;
 		else
 		{
 			getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
 			return false;
 		}
 	}
-
+	
+	public void startCooldown(UUID uuid) {
+		getValue().putCooldown(uuid);
+	}	
+	public void removeCooldown(UUID uuid) {
+		getValue().removeCooldown(uuid);
+	}
+	
+	public String getCooldown(UUID uuid)
+	{
+		return getValue().getConvertedCooldown(uuid);
+	}
 
 	
 

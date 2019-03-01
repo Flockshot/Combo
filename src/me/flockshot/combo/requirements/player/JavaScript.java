@@ -29,7 +29,6 @@ public class JavaScript implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -39,7 +38,6 @@ public class JavaScript implements Requirement {
 	public String getValue() {
 		return script;
 	}
-
 	@Override
 	public void setValue(Object value) {
 		script = (String) value;
@@ -49,7 +47,6 @@ public class JavaScript implements Requirement {
 	public String getCompareWith() {
 		return null;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {		
 	}
@@ -58,11 +55,9 @@ public class JavaScript implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
-
 	}
 
 	@Override
@@ -76,7 +71,8 @@ public class JavaScript implements Requirement {
         
 		try
 		{
-			if((boolean) engine.eval(script)) return true;
+			if((boolean) engine.eval(script))
+			    return true;
 			else
 			{
 				getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
@@ -87,8 +83,7 @@ public class JavaScript implements Requirement {
 		}
 
 		getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
-		return false;
-		
+		return false;		
 	}
 
 

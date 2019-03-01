@@ -15,75 +15,46 @@ public class PlayerComboEvent extends Event
 	private Combo combo;
 	private boolean cancelled = false;
 
-	/*
-	public PlayerComboEvent(Player plr, int val) {
-		player = plr;
-		if(val<=4 && val>=1)
-		{
-			setComboID(val);	
-		}
-		else
-		{
-			setComboID(new Integer(null));
-		}
-		
-		setCombo(getCombination(val));
-	}
-	*/
 	public PlayerComboEvent(Player plr, ComboType type, Combo combo)
 	{
 		player = plr;
-		setComboType(type);
-		
+		setComboType(type);		
 		setCombo(combo);
 	}
 
-
 	@Override
-	public HandlerList getHandlers()
-	{
+	public HandlerList getHandlers() {
 		return handlers;
 	}
 
-	public static HandlerList getHandlerList()
-	{
+	public static HandlerList getHandlerList() {
 		return handlers;
 	}
 	
-	//TODO
-	public Player getPlayer()
-	{
+	public Player getPlayer() {
 		return player;
 	}
-
-
-	public boolean isCancelled()
-	{
+	
+	public boolean isCancelled() {
 		return cancelled;
 	}
-
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
 	}
-		
+	
 
-	public Combo getCombo()
-	{
+	public Combo getCombo()	{
 		return combo;
 	}
+	public void setCombo(Combo combo) {
+        this.combo = combo;
+    }
 
-	public ComboType getComboType()
-	{
+	public ComboType getComboType()	{
 		return type;
 	}
-
-	public void setComboType(ComboType type)
-	{
-		this.type = type;
-	}
-
-	public void setCombo(Combo combo) {
-		this.combo = combo;
-	}
-	
+	public void setComboType(ComboType type) {
+        this.type = type;
+    }
+		
 }

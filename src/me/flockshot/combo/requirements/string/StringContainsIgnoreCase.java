@@ -26,17 +26,15 @@ public class StringContainsIgnoreCase implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	@Override
 	public String getValue() {
 		return value;
 	}
-
 	@Override
 	public void setValue(Object value) {
 		this.value = (String) value;
@@ -46,7 +44,6 @@ public class StringContainsIgnoreCase implements Requirement {
 	public String getCompareWith() {
 		return compareWith;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {
 		this.compareWith = (String) compareWith;
@@ -56,11 +53,9 @@ public class StringContainsIgnoreCase implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
-
 	}
 
 	@Override
@@ -70,9 +65,8 @@ public class StringContainsIgnoreCase implements Requirement {
 		String val = pt.getTranslatedString(player, getValue());
 		String comp = pt.getTranslatedString(player, getCompareWith());
 		
-		
-		
-		if(val.toLowerCase().contains(comp.toLowerCase())) return true;
+		if(val.toLowerCase().contains(comp.toLowerCase()))
+		    return true;
 		else
 		{
 			getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));

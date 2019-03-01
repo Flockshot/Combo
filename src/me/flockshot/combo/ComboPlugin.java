@@ -1,16 +1,11 @@
 package me.flockshot.combo;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.flockshot.combo.action.ActionManager;
@@ -55,6 +50,7 @@ import me.flockshot.combo.requirements.number.NotEqual;
 import me.flockshot.combo.requirements.player.Cooldown;
 import me.flockshot.combo.requirements.player.HasPermission;
 import me.flockshot.combo.requirements.player.JavaScript;
+import me.flockshot.combo.requirements.player.StriclyPhysical;
 import me.flockshot.combo.requirements.string.StringContains;
 import me.flockshot.combo.requirements.string.StringContainsIgnoreCase;
 import me.flockshot.combo.requirements.string.StringEquals;
@@ -76,58 +72,19 @@ public class ComboPlugin extends JavaPlugin
 	private SubActionManager subActionManage;
 	private RequirementManager reqManage;
 	private ExecutableManager executableManage;
-	
-	
-	
-	
-	public static void main(String[] args)
-	{
-	    // Prints "Hello, World" to the terminal window.
-		//Executable something = getFromType("[PlayerCommand]");
-		//System.out.println("Hello, World   " + something.getClass().getName());
-		
-		List<String> first = new ArrayList<String>();
-		first.add("First");
-		first.add("Second");
-		first.add("Third+");
-		
-		List<String> second = new ArrayList<String>();
-		second.add("fIrSt");
-		second.add("second");
-		second.add("THIR");
-		
-		
-		
-		List<String> third = new ArrayList<String>();
-		third.add("First");		
-		third.add("Third+");
-		third.add("Second");
-		
-		
-		System.out.println(first.toString().toLowerCase().contains(second.toString().toLowerCase()));
-		
-		System.out.println(first.toString().toLowerCase());
-		System.out.println(second.toString().toLowerCase());
-		//System.out.print(first.equals(third));
-		
-	}
 
+	
 	public void onEnable()
 	{		
-		
 		File ActionBarToggledir = new File(this.getDataFolder()+ File.separator+"Players");		
-		ActionBarToggledir.mkdir();
-		
+		ActionBarToggledir.mkdir();		
 		
 		getConfig().options().copyDefaults(true);
 		saveConfig();		
-		saveConfig();
-		
+		saveConfig();		
 		
 		registerEvents();
 		registerActionbar();
-		
-		//setTimerManager(new TimerManager(this));
 		
 		setComboManager(new ComboManager(this));
 		setActionManager(new ActionManager(this));		
@@ -140,104 +97,85 @@ public class ComboPlugin extends JavaPlugin
 
 		getActionManager().registerActions(new File(this.getDataFolder()+ File.separator+"Actions"));
     }
-	
-	
-		
-	private void registerAllExecutables()
-	{
-		getExecutableManager().register(new ConsoleCommand());
-		
-		getExecutableManager().register(new PlayerCommand());
-		getExecutableManager().register(new PlayerMessage());
-		
-		getExecutableManager().register(new PlaySound());
-	}
-	
-	private void registerAllRequirements()
-	{
-		getRequirementManager().register(new HasEnchant());
-		
-		getRequirementManager().register(new ItemLoreEquals());
-		getRequirementManager().register(new ItemLoreEqualsIgnoreCase());
-		getRequirementManager().register(new ItemNameEquals());
-		getRequirementManager().register(new ItemNameEqualsIgnoreCase());
-		getRequirementManager().register(new ItemNameContains());
-		getRequirementManager().register(new ItemNameContainsIgnoreCase());
-		
-		
-		getRequirementManager().register(new Equal());
-		getRequirementManager().register(new Greater());
-		getRequirementManager().register(new Lesser());
-		getRequirementManager().register(new GreaterEqual());
-		getRequirementManager().register(new LesserEqual());
-		getRequirementManager().register(new NotEqual());
-		
-		
-		getRequirementManager().register(new Cooldown());
-		getRequirementManager().register(new HasPermission());
-		getRequirementManager().register(new JavaScript());
-		
-		
-		getRequirementManager().register(new StringEquals());
-		getRequirementManager().register(new StringEqualsIgnoreCase());
-		getRequirementManager().register(new StringContains());
-		getRequirementManager().register(new StringContainsIgnoreCase());
-	}
 
 	public void onDisable()
 	{	
 		//TODO SAVE
-		Collection<? extends Player> plrs = Bukkit.getServer().getOnlinePlayers();
-		Iterator<? extends Player> it = plrs.iterator();
-		
-		while(it.hasNext())
-		{
-			getComboManager().removeComboinProgress(it.next().getUniqueId());
-		}
-		
+		Bukkit.getServer().getOnlinePlayers().forEach(plr -> getComboManager().removeComboinProgress(plr.getUniqueId()));		
 	}
+	
 	
 	private void registerEvents()
 	{
-		// TODO Auto-generated method stub
 		getServer().getPluginManager().registerEvents(new ComboEvent(this), this);
 		getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
 		getServer().getPluginManager().registerEvents(new QuitEvent(this), this);
 		getServer().getPluginManager().registerEvents(new InteractEntityEvent(this), this);
-		if(Bukkit.getVersion().contains("1.8"))
-		{
-			getServer().getPluginManager().registerEvents(new InteractEvent1_8(this), this);
-		}
-		else
-		{
-			getServer().getPluginManager().registerEvents(new InteractEvent(this), this);
-		}
 		
+		if(Bukkit.getVersion().contains("1.8"))
+			getServer().getPluginManager().registerEvents(new InteractEvent1_8(this), this);		
+		else
+			getServer().getPluginManager().registerEvents(new InteractEvent(this), this);
 	}
 	
+    private void registerAllExecutables()
+    {
+        getExecutableManager().register(new ConsoleCommand());
+        
+        getExecutableManager().register(new PlayerCommand());
+        getExecutableManager().register(new PlayerMessage());
+        
+        getExecutableManager().register(new PlaySound());
+    }
+    
+    private void registerAllRequirements()
+    {
+        getRequirementManager().register(new HasEnchant());
+        
+        getRequirementManager().register(new ItemLoreEquals());
+        getRequirementManager().register(new ItemLoreEqualsIgnoreCase());
+        getRequirementManager().register(new ItemNameEquals());
+        getRequirementManager().register(new ItemNameEqualsIgnoreCase());
+        getRequirementManager().register(new ItemNameContains());
+        getRequirementManager().register(new ItemNameContainsIgnoreCase());        
+        
+        getRequirementManager().register(new Equal());
+        getRequirementManager().register(new Greater());
+        getRequirementManager().register(new Lesser());
+        getRequirementManager().register(new GreaterEqual());
+        getRequirementManager().register(new LesserEqual());
+        getRequirementManager().register(new NotEqual());        
+        
+        getRequirementManager().register(new Cooldown());
+        getRequirementManager().register(new HasPermission());
+        getRequirementManager().register(new StriclyPhysical());
+        getRequirementManager().register(new JavaScript());        
+        
+        getRequirementManager().register(new StringEquals());
+        getRequirementManager().register(new StringEqualsIgnoreCase());
+        getRequirementManager().register(new StringContains());
+        getRequirementManager().register(new StringContainsIgnoreCase());
+    }
 	
-	public ActionManager getActionManager()
-	{
-		return actionManage;
-	}
-	public ComboManager getComboManager()
-	{
-		return comboManage;
-	}
-	public ComboActionBar getComboActionBar()
-	{
-	    return comboActionBar;
-	}
-	
-	private void setActionManager(ActionManager actionManage)
-	{
+    
+    
+	public ActionManager getActionManager() {
+        return actionManage;
+    }
+	private void setActionManager(ActionManager actionManage) {
 		this.actionManage = actionManage;
 	}
 	
-	private void setComboManager(ComboManager comboManage)
-	{
+	public ComboManager getComboManager() {
+        return comboManage;
+    }
+	private void setComboManager(ComboManager comboManage) {
 		this.comboManage = comboManage;
 	}
+	
+	public ComboActionBar getComboActionBar() {
+        return comboActionBar;
+    }
 	
 	private void registerActionbar()
 	{
@@ -287,50 +225,33 @@ public class ComboPlugin extends JavaPlugin
 		{
 			actionbar = null;
 		}
-		comboActionBar = new ComboActionBar(this, actionbar);
-		
+		comboActionBar = new ComboActionBar(this, actionbar);		
 	}
-
-
 
 	public RequirementManager getRequirementManager() {
 		return reqManage;
 	}
-
-
-
 	public void setRequirementManager(RequirementManager reqManage) {
 		this.reqManage = reqManage;
 	}
 
-
-
 	public SubActionManager getSubActionManager() {
 		return subActionManage;
 	}
-
-
-
 	public void setSubActionManager(SubActionManager subActionManage) {
 		this.subActionManage = subActionManage;
 	}
 
-
-
 	public ExecutableManager getExecutableManager() {
 		return executableManage;
 	}
-
-
-
 	public void setExecutableManager(ExecutableManager manage) {
 		this.executableManage = manage;
 	}
 
 	public FileConfiguration getPlayerConfig(UUID uuid)
 	{
-		File plrfile = new File(getDataFolder() + File.separator + "Players", uuid + ".yml");
-		
+		File plrfile = new File(getDataFolder() + File.separator + "Players", uuid + ".yml");		
 		return YamlConfiguration.loadConfiguration(plrfile);
 	}
 	/*

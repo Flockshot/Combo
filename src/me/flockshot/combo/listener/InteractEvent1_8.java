@@ -20,26 +20,23 @@ public class InteractEvent1_8 implements Listener
 	
 	@EventHandler
 	public void onAction(PlayerInteractEvent event)
-	{
-		
+	{		
 		Player player = event.getPlayer();		
-		player.sendMessage(event.getAction()+"");
+
 		if(player.hasPermission("combo.start"))
 		{
-			String action = "";
-			
-			if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.PHYSICAL))
-			{
-				if(!plugin.getConfig().getBoolean("allowPhysical") && event.getAction().equals(Action.PHYSICAL))
-				{
-					return;
-				}
-				action = "left";				
-			}
-			else
-			{
-				action = "right";
-			}
+		    String action = "";
+            
+            if(event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.PHYSICAL))
+            {
+                if(!plugin.getConfig().getBoolean("allowPhysical") && event.getAction().equals(Action.PHYSICAL))
+                    return;
+                
+                action = event.getAction().equals(Action.PHYSICAL) ? "pleft" : "left";                      
+            }
+            else
+                action = "right";
+            
 			@SuppressWarnings("deprecation")
 			ItemStack item = player.getInventory().getItemInHand();
 			

@@ -25,7 +25,6 @@ public class HasEnchant implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -35,7 +34,6 @@ public class HasEnchant implements Requirement {
 	public String getValue() {
 		return value;
 	}
-
 	@Override
 	public void setValue(Object value) {
 		this.value = (String) value;
@@ -45,7 +43,6 @@ public class HasEnchant implements Requirement {
 	public String getCompareWith() {
 		return null;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {
 	}
@@ -54,7 +51,6 @@ public class HasEnchant implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
@@ -72,7 +68,6 @@ public class HasEnchant implements Requirement {
 			getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
 			return false;
 		}
-
 	}
 
 

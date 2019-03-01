@@ -25,7 +25,6 @@ public class ItemNameEquals implements Requirement {
 	public String getName() {
 		return name;
 	}
-
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -35,7 +34,6 @@ public class ItemNameEquals implements Requirement {
 	public String getValue() {
 		return value;
 	}
-
 	@Override
 	public void setValue(Object value) {
 		this.value = (String) value;
@@ -45,7 +43,6 @@ public class ItemNameEquals implements Requirement {
 	public String getCompareWith() {
 		return null;
 	}
-
 	@Override
 	public void setComparison(Object compareWith) {
 	}
@@ -54,11 +51,9 @@ public class ItemNameEquals implements Requirement {
 	public List<Executable> getDenial() {
 		return executables;
 	}
-
 	@Override
 	public void setDenails(List<Executable> executables) {
 		this.executables = executables;
-
 	}
 
 	@Override
@@ -69,9 +64,7 @@ public class ItemNameEquals implements Requirement {
 
 		if(item.hasItemMeta())
 			if(item.getItemMeta().hasDisplayName())
-			{
 				return item.getItemMeta().getDisplayName().equals(val);
-			}
 			else
 			{
 				getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
@@ -81,7 +74,7 @@ public class ItemNameEquals implements Requirement {
 		{
 			getDenial().stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
 			return false;
-		}		
+		}
 	}
 
 }

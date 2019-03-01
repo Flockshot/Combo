@@ -24,12 +24,12 @@ public class ActionManager
 	private ComboPlugin plugin;	
 	private List<Action> actions = new ArrayList<Action>();
 
+	
 	public ActionManager(ComboPlugin main)
 	{
 		plugin = main;
 	}
-
-
+	
 	public void registerActions(File folder)
 	{
 		File[] files = folder.listFiles();
@@ -75,42 +75,35 @@ public class ActionManager
 	}
 
 
-	public void callAction(ComboType type, Player player, ItemStack item)
-	{
-		
+	public void callAction(ComboType type, Player player, ItemStack item, boolean physical)
+	{		
 		List<Action> finalActs = getFinalActs(item);
-		//.filter(act -> act.passesRequirements(player, item))
-		
-		
-		// TODO Auto-generated method stub		
-		//plugin.getLogger().log(Level.SEVERE, item.getDurability()+"");
-		//plugin.getLogger().log(Level.SEVERE, finalActs.size()+"");
-		
+
 		for(Action act : finalActs)
 		{
 			SubAction subAct = act.getSubActionFromType(type);
 			if(subAct!=null)
 			{
 				if(plugin.getRequirementManager().passesRequirements(player, item, act.getGlobalRequirements()))
-				{						
-					if(plugin.getRequirementManager().passesRequirements(player, item, subAct.getRequirements()))
+				{					
+					if(plugin.getRequirementManager().passesRequirements(player, item, physical, subAct.getRequirements()))
 					{
-						//TODO REMOVE THIS
-						//plugin.getLogger().log(Level.SEVERE, "In Passes Req");
+						plugin.getRequirementManager().startCooldownTimer(act.getGlobalRequirements(), player);
+						plugin.getRequirementManager().startCooldownTimer(subAct.getRequirements(), player);
+						
 						plugin.getExecutableManager().executeExecutables(player, subAct.getAcceptance());
 					}
 					return;
 				}
-			}
-							
+			}							
 		}
 	}
 
 	
 	public boolean actionRegisteredToItem(Player player, ItemStack item)
 	{
-		//TODO MAKE IT COMPAITABLE WITH NAMES AND LORE
 		List<Action> finalActs = getFinalActs(item);
+		
 		if(finalActs.size()>=1)
 		{
 			Action action = finalActs.get(0);
@@ -124,19 +117,15 @@ public class ActionManager
 			}
 			return true;
 		}
-		return false;
-		
+		return false;		
 	}
 	
 	public List<Action> getFinalActs(ItemStack item)
 	{
 		return getActions().stream().filter(act -> act.getItem().getType().equals(item.getType())).filter(act -> act.getItem().getDurability()==item.getDurability()).collect(Collectors.toList());
-		//return getActions().stream().filter(act -> act.getItem().getType().equals(item.getType())).filter(act -> act.getItem().getData().getData()==item.getData().getData()).collect(Collectors.toList());
-		
 	}
 	
-	private List<Action> getActions()
-	{
+	private List<Action> getActions() {
 		return actions;
 	}
 	

@@ -11,13 +11,10 @@ public class ColorTranslator
 	{
 		List<String> translatedList = new ArrayList<String>();
 		
-		if(lore!=null && !lore.isEmpty())
-		{			
+		if(lore!=null && !lore.isEmpty())	
 			for(String line : lore)
-			{
 				translatedList.add(getTranslatedString(line));
-			}
-		}
+
 		return translatedList;
 	}
 	

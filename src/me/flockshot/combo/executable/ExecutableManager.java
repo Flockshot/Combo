@@ -13,8 +13,6 @@ import me.flockshot.combo.ComboPlugin;
 
 public class ExecutableManager 
 {
-	
-	
 	ComboPlugin plugin;
 	HashMap<String, Executable> registered = new HashMap<String, Executable>();
 	
@@ -27,18 +25,13 @@ public class ExecutableManager
 	{
 		List<Executable> executables = new ArrayList<Executable>();
 		
-		//TODO change name
-		//System.out.println(ConsoleColors.RED+"EXECUTABLES AT PATH = "+path+ConsoleColors.RESET);
 		if(file.contains(path))
 		{
-			//TODO change name
 			for(final String key : file.getStringList(path))
 			{
 				String name = getIdentifierFromString(key);
 				Executable executable = getFromIdentifier(name);
 				String value = getValueFromString(key);
-				
-				//System.out.println(ConsoleColors.RED+key+" with name "+name+" and value "+value);
 				
 				if(name==null || !executable.passesValidity(value))
 				{
@@ -49,15 +42,11 @@ public class ExecutableManager
 				}
 				
 				executable.setValue(value);
-
-				//System.out.println(ConsoleColors.RED+executable.getIdentifier()+" "+executable.getValue() +" IS THE VALUE ");
 				executables.add(executable);
 			}
 		}
-		//System.out.println(ConsoleColors.RED+"EXECUTABLES SIZE IS = "+executables.size()+ConsoleColors.RESET);
 		return executables;
 	}
-	
 	
 	
 	private String getValueFromString(String val)
@@ -101,8 +90,5 @@ public class ExecutableManager
 	{
 		executables.stream().filter(exe -> exe instanceof PlayerExecutable).forEach(exe -> ((PlayerExecutable)exe).execute(player));
 	}
-
-
-
 
 }

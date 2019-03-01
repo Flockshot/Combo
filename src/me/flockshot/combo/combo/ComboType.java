@@ -17,7 +17,5 @@ public enum ComboType
 	SLLL,
 	SLLR,
 	SLRL,
-	SLRR;
-	
-	
+	SLRR;	
 }

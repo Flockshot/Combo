@@ -26,48 +26,40 @@ public class Action
 		setGlobalRequirements(globalReqs);
 	}
 
-
-	public ItemStack getItem()
-	{
+	public ItemStack getItem() {
 		return item;
 	}
-	private void setItem(ItemStack item)
-	{
+	private void setItem(ItemStack item) {
 		this.item = item;
 	}
 	
-	public void setName(String name)
-	{
+	public String getName() {
+        return actionName;
+    }
+	public void setName(String name) {
 		actionName = name;
 	}
 
-	public String getName()
-	{
-		return actionName;
-	}
-	public List<SubAction> getSubActions()
-	{
+	public SubAction getSubActionFromType(ComboType type) {
+        return combos.get(type);
+    }
+	public List<SubAction> getSubActions() {
 		return actions;
-	}
-	public SubAction getSubActionFromType(ComboType type)
-	{
-		return combos.get(type);
 	}
 	
 	public void setSubActions(List<SubAction> actions)
-	{
-		this.actions = actions;
-		for(SubAction subAct : actions)
-		{
-			combos.put(subAct.getComboType(), subAct);
-		}
-	}
-	public List<Requirement> getGlobalRequirements()
-	{
+    {
+        this.actions = actions;
+        for(SubAction subAct : actions)
+        {
+            combos.put(subAct.getComboType(), subAct);
+        }
+    }
+		
+	public List<Requirement> getGlobalRequirements() {
 		return globalReqs;
 	}
-	public void setGlobalRequirements(List<Requirement> reqs)
-	{
+	public void setGlobalRequirements(List<Requirement> reqs) {
 		globalReqs = reqs;
 	}
 		

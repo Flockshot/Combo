@@ -29,50 +29,36 @@ public class PlayerPreComboEvent extends Event
 	}
 
 	@Override
-	public HandlerList getHandlers()
-	{
+	public HandlerList getHandlers() {
 		return handlers;
 	}
-
-	public static HandlerList getHandlerList()
-	{
+	public static HandlerList getHandlerList() {
 		return handlers;
 	}
 	
-	//TODO
-	public Player getPlayer()
-	{
+	public Player getPlayer() {
 		return player;
 	}
 
 
-	public boolean isCancelled()
-	{
+	public boolean isCancelled() {
 		return cancelled;
 	}
-
-	public void setCancelled(boolean cancelled)
-	{
+	public void setCancelled(boolean cancelled)	{
 		this.cancelled = cancelled;
 	}
 
-	public boolean isRight()
-	{
+	public boolean isRight() {
 		return isRight;
 	}
-
-	private void setRight(boolean isRight)
-	{
+	private void setRight(boolean isRight) {
 		this.isRight = isRight;
 	}
 
-	public boolean isLeft()
-	{
+	public boolean isLeft()	{
 		return isLeft;
 	}
-
-	private void setLeft(boolean isLeft)
-	{
+	private void setLeft(boolean isLeft) {
 		this.isLeft = isLeft;
 	}
 	

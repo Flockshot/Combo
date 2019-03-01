@@ -18,7 +18,6 @@ public class ComboTimer
 	
 	public boolean passesTimers()
 	{
-		// TODO Auto-generated method stub
 		int time = 0;
 		
 		if(first)
@@ -28,8 +27,7 @@ public class ComboTimer
 		
 		long difference = System.currentTimeMillis()-startTime;
 		if(difference<=time)
-			return true;
-		
+			return true;		
 		return false;		
 	}
 	
@@ -45,8 +43,7 @@ public class ComboTimer
 		first = false;
 	}
 	
-	public void resetTimer()
-	{
+	public void resetTimer() {
 		startTime = 0l;
 	}
 }

@@ -13,24 +13,18 @@ public class PlaySound implements PlayerExecutable
 
 	private String value = "";
 
-
 	@Override
 	public String getIdentifier() {
-
 		return "PlaySound";
 	}
 
 	@Override
-	public String getValue()
-	{
+	public String getValue() {
 		return value;
 	}
-
 	@Override
-	public void setValue(String value)
-	{
-		this.value = value;
-		
+	public void setValue(String value) {
+		this.value = value;		
 	}
 	
 	@Override
