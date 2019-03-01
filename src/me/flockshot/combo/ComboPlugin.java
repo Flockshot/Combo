@@ -66,57 +66,57 @@ public class ComboPlugin extends JavaPlugin
 	//public HashMap<UUID, String> startedcombo = new HashMap<UUID, String>();
     public ComboActionBar comboActionBar;
 	
-	private ComboManager comboManage;
-	//private TimerManager timerManage;
-	private ActionManager actionManage;
-	private SubActionManager subActionManage;
-	private RequirementManager reqManage;
-	private ExecutableManager executableManage;
+    private ComboManager comboManage;
+    //private TimerManager timerManage;
+    private ActionManager actionManage;
+    private SubActionManager subActionManage;
+    private RequirementManager reqManage;
+    private ExecutableManager executableManage;
 
 	
-	public void onEnable()
-	{		
-		File ActionBarToggledir = new File(this.getDataFolder()+ File.separator+"Players");		
-		ActionBarToggledir.mkdir();		
+    public void onEnable()
+    {		
+        File ActionBarToggledir = new File(this.getDataFolder()+ File.separator+"Players");		
+        ActionBarToggledir.mkdir();		
 		
-		getConfig().options().copyDefaults(true);
-		saveConfig();		
-		saveConfig();		
+        getConfig().options().copyDefaults(true);
+        saveConfig();		
+        saveConfig();		
 		
-		registerEvents();
-		registerActionbar();
+        registerEvents();
+        registerActionbar();
 		
-		setComboManager(new ComboManager(this));
-		setActionManager(new ActionManager(this));		
-		setSubActionManager(new SubActionManager(this));
-		setRequirementManager(new RequirementManager(this));
-		setExecutableManager(new ExecutableManager(this));
+        setComboManager(new ComboManager(this));
+        setActionManager(new ActionManager(this));		
+        setSubActionManager(new SubActionManager(this));
+        setRequirementManager(new RequirementManager(this));
+        setExecutableManager(new ExecutableManager(this));
             	
-		registerAllExecutables();
-		registerAllRequirements();
+        registerAllExecutables();
+        registerAllRequirements();
 
-		getActionManager().registerActions(new File(this.getDataFolder()+ File.separator+"Actions"));
+        getActionManager().registerActions(new File(this.getDataFolder()+ File.separator+"Actions"));
     }
 
-	public void onDisable()
-	{	
+    public void onDisable()
+    {	
 		//TODO SAVE
-		Bukkit.getServer().getOnlinePlayers().forEach(plr -> getComboManager().removeComboinProgress(plr.getUniqueId()));		
-	}
+        Bukkit.getServer().getOnlinePlayers().forEach(plr -> getComboManager().removeComboinProgress(plr.getUniqueId()));		
+    }
 	
 	
-	private void registerEvents()
-	{
-		getServer().getPluginManager().registerEvents(new ComboEvent(this), this);
-		getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
-		getServer().getPluginManager().registerEvents(new QuitEvent(this), this);
-		getServer().getPluginManager().registerEvents(new InteractEntityEvent(this), this);
+    private void registerEvents()
+    {
+        getServer().getPluginManager().registerEvents(new ComboEvent(this), this);
+        getServer().getPluginManager().registerEvents(new JoinEvent(this), this);
+        getServer().getPluginManager().registerEvents(new QuitEvent(this), this);
+        getServer().getPluginManager().registerEvents(new InteractEntityEvent(this), this);
 		
-		if(Bukkit.getVersion().contains("1.8"))
+        if(Bukkit.getVersion().contains("1.8"))
             getServer().getPluginManager().registerEvents(new InteractEvent1_8(this), this);		
-		else
+        else
             getServer().getPluginManager().registerEvents(new InteractEvent(this), this);
-	}
+    }
 	
     private void registerAllExecutables()
     {
@@ -157,101 +157,79 @@ public class ComboPlugin extends JavaPlugin
         getRequirementManager().register(new StringContainsIgnoreCase());
     }
 	    
-	public ActionManager getActionManager() {
+    public ActionManager getActionManager() {
         return actionManage;
     }
-	private void setActionManager(ActionManager actionManage) {
-		this.actionManage = actionManage;
-	}
+    private void setActionManager(ActionManager actionManage) {
+        this.actionManage = actionManage;
+    }
 	
-	public ComboManager getComboManager() {
+    public ComboManager getComboManager() {
         return comboManage;
     }
-	private void setComboManager(ComboManager comboManage) {
-		this.comboManage = comboManage;
-	}
+    private void setComboManager(ComboManager comboManage) {
+        this.comboManage = comboManage;
+    }
 	
-	public ComboActionBar getComboActionBar() {
+    public ComboActionBar getComboActionBar() {
         return comboActionBar;
     }
 	
-	private void registerActionbar()
-	{
-		String ver = Bukkit.getVersion();
-		ActionBar actionbar;
-		if(ver.contains("1.8.4") || ver.contains("1.8.5") || ver.contains("1.8.6") || ver.contains("1.8.7") || ver.contains("1.8.8") || ver.contains("1.8.9"))
-		{
+    private void registerActionbar()
+    {
+        String ver = Bukkit.getVersion();
+        ActionBar actionbar;
+        if(ver.contains("1.8.4") || ver.contains("1.8.5") || ver.contains("1.8.6") || ver.contains("1.8.7") || ver.contains("1.8.8") || ver.contains("1.8.9"))
             actionbar = new ActionBarv1_8_R3();
-		}
 		else if(ver.contains("1.8.3"))
-		{
-            actionbar = new ActionBarv1_8_R2();
-		}
+		    actionbar = new ActionBarv1_8_R2();
 		else if(ver.contains("1.8"))
-		{
-            actionbar = new ActionBarv1_8_R1();
-		}
+		    actionbar = new ActionBarv1_8_R1();
 		else if(ver.contains("1.9.4"))
-		{
-            actionbar = new ActionBarv1_9_R2();
-		}
+		    actionbar = new ActionBarv1_9_R2();
 		else if(ver.contains("1.9"))
-		{
-            actionbar = new ActionBarv1_9_R1();
-		}		
+		    actionbar = new ActionBarv1_9_R1();
 		else if(ver.contains("1.10"))
-		{
-            actionbar = new ActionBarv1_10_R1();
-		}
+		    actionbar = new ActionBarv1_10_R1();
 		else if(ver.contains("1.11"))
-		{
-            actionbar = new ActionBarv1_11_R1();
-		}
+		    actionbar = new ActionBarv1_11_R1();
 		else if(ver.contains("1.12")) 
-		{
-            actionbar = new ActionBarv1_12_R1();
-		}
+		    actionbar = new ActionBarv1_12_R1();
 		else if(ver.contains("1.13.1") || ver.contains("1.13.2"))
-		{
-            actionbar = new ActionBarv1_13_R2();
-		}
+		    actionbar = new ActionBarv1_13_R2();
 		else if(ver.contains("1.13"))
-		{
-            actionbar = new ActionBarv1_13_R1();
-		}
+		    actionbar = new ActionBarv1_13_R1();
 		else
-		{
-            actionbar = null;
-		}
+		    actionbar = null;
 		comboActionBar = new ComboActionBar(this, actionbar);		
 	}
 
-	public RequirementManager getRequirementManager() {
-		return reqManage;
-	}
-	public void setRequirementManager(RequirementManager reqManage) {
-		this.reqManage = reqManage;
-	}
+    public RequirementManager getRequirementManager() {
+        return reqManage;
+    }
+    public void setRequirementManager(RequirementManager reqManage) {
+        this.reqManage = reqManage;
+    }
 
-	public SubActionManager getSubActionManager() {
-		return subActionManage;
-	}
-	public void setSubActionManager(SubActionManager subActionManage) {
-		this.subActionManage = subActionManage;
-	}
+    public SubActionManager getSubActionManager() {
+        return subActionManage;
+    }
+    public void setSubActionManager(SubActionManager subActionManage) {
+        this.subActionManage = subActionManage;
+    }
 
-	public ExecutableManager getExecutableManager() {
-		return executableManage;
-	}
-	public void setExecutableManager(ExecutableManager manage) {
-		this.executableManage = manage;
-	}
+    public ExecutableManager getExecutableManager() {
+        return executableManage;
+    }
+    public void setExecutableManager(ExecutableManager manage) {
+        this.executableManage = manage;
+    }
 
-	public FileConfiguration getPlayerConfig(UUID uuid)
-	{
-		File plrfile = new File(getDataFolder() + File.separator + "Players", uuid + ".yml");		
-		return YamlConfiguration.loadConfiguration(plrfile);
-	}
+    public FileConfiguration getPlayerConfig(UUID uuid)
+    {
+        File plrfile = new File(getDataFolder() + File.separator + "Players", uuid + ".yml");		
+        return YamlConfiguration.loadConfiguration(plrfile);
+    }
 	/*
 	public boolean onCommand(CommandSender sender, Command command, String cmdvalue, String[] args)
 	{
