@@ -30,12 +30,14 @@ public class PlaySound implements PlayerExecutable
 	@Override
 	public boolean passesValidity(String value)
 	{
+	    //SYNTAX: Sound x y z pitch vol
 		String[] vals = value.split(" ");
+		
 		if(vals!=null)
 		{
 			if(vals.length>=6)
 			{
-				if(Sound.valueOf(vals[3])!=null)
+				if(Sound.valueOf(vals[0])!=null)
 				{
 					NumberUtility nUtil = new NumberUtility();
 					if(nUtil.isNum(vals[4]) && nUtil.isNum(vals[5]))
@@ -56,15 +58,15 @@ public class PlaySound implements PlayerExecutable
 		String[] vals = pt.getTranslatedString(player, value).split(" ");
 		NumberUtility nUtil = new NumberUtility();
 		
-		if(nUtil.isNum(vals[0]) && nUtil.isNum(vals[1]) && nUtil.isNum(vals[2]))
+		if(nUtil.isNum(vals[1]) && nUtil.isNum(vals[2]) && nUtil.isNum(vals[3]))
 		{
 			float x,y,z;
-			x = Float.parseFloat(vals[0]);
-			y = Float.parseFloat(vals[1]);
-			z = Float.parseFloat(vals[2]);
+			x = Float.parseFloat(vals[1]);
+			y = Float.parseFloat(vals[2]);
+			z = Float.parseFloat(vals[3]);
 			
 			Location loc = new Location(player.getWorld(), x, y, z);
-			Sound sound = Sound.valueOf(vals[3]);
+			Sound sound = Sound.valueOf(vals[0]);
 			float pitch = Float.parseFloat(vals[4]);
 			float amplitude = Float.parseFloat(vals[5]);
 			

@@ -51,7 +51,7 @@ public class ActionManager
             for(String name : names)
             {
             	String itemID = file.contains(name+".Item") ? file.getString(name+".Item") : null;
-            	int data = file.contains(name+".Data") ? file.getInt(name+".Data") : 1;
+            	int data = file.contains(name+".Data") ? file.getInt(name+".Data") : 0;
             	
             	ItemUtility iUtil = new ItemUtility();
             	ItemStack item = iUtil.generateItem(itemID, data);
