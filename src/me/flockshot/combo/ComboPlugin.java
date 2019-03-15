@@ -1,7 +1,10 @@
 package me.flockshot.combo;
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
+
+import javax.script.ScriptException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -26,6 +29,9 @@ import me.flockshot.combo.executable.ExecutableManager;
 import me.flockshot.combo.executables.player.ConsoleCommand;
 import me.flockshot.combo.executables.player.PlayerCommand;
 import me.flockshot.combo.executables.player.PlayerMessage;
+import me.flockshot.combo.executables.player.potion.PlayePotionEffectAddTime;
+import me.flockshot.combo.executables.player.potion.PlayerPotionEffect;
+import me.flockshot.combo.executables.player.potion.PlayerPotionEffectOverridable;
 import me.flockshot.combo.executables.world.PlaySound;
 import me.flockshot.combo.listener.ComboEvent;
 import me.flockshot.combo.listener.InteractEntityEvent;
@@ -33,6 +39,8 @@ import me.flockshot.combo.listener.InteractEvent;
 import me.flockshot.combo.listener.InteractEvent1_8;
 import me.flockshot.combo.listener.JoinEvent;
 import me.flockshot.combo.listener.QuitEvent;
+import me.flockshot.combo.playercache.PlayerCache;
+import me.flockshot.combo.playercache.PlayerCacheManager;
 import me.flockshot.combo.requirement.RequirementManager;
 import me.flockshot.combo.requirements.item.HasEnchant;
 import me.flockshot.combo.requirements.item.ItemLoreEquals;
@@ -56,6 +64,9 @@ import me.flockshot.combo.requirements.string.StringContainsIgnoreCase;
 import me.flockshot.combo.requirements.string.StringEquals;
 import me.flockshot.combo.requirements.string.StringEqualsIgnoreCase;
 import me.flockshot.combo.subactionmanager.SubActionManager;
+import me.flockshot.combo.utils.ColorTranslator;
+import me.flockshot.combo.utils.FullTranslator;
+import me.flockshot.combo.utils.PlaceholderTranslator;
 
 
 
@@ -64,6 +75,8 @@ public class ComboPlugin extends JavaPlugin
 
 	//public HashMap<String, String> Combos = new HashMap<String, String>();
 	//public HashMap<UUID, String> startedcombo = new HashMap<UUID, String>();
+    private static ComboPlugin instance;
+    
     public ComboActionBar comboActionBar;
 	
     private ComboManager comboManage;
@@ -72,12 +85,104 @@ public class ComboPlugin extends JavaPlugin
     private SubActionManager subActionManage;
     private RequirementManager reqManage;
     private ExecutableManager executableManage;
+    
+    private PlayerCacheManager playerCacheManage;
+    
+    private PlaceholderTranslator pt;
+    private ColorTranslator ct;
+    private FullTranslator ft;
 
 	
+    public static void printPairs(List<Integer> sortedList, int desiredNum)
+    {
+        Integer[] nums = (Integer[]) sortedList.toArray();
+        for(int i=0; i<nums.length-1; i++)
+            if(nums[i]+nums[i+1]==desiredNum)
+                System.out.println( nums[i]+" , "+nums[i+1]);
+    }
+    
+    public static void main(String[] args) throws ScriptException
+    {
+        //List<Integer> sortedList = Arrays.asList(2, 3, 4, 5, 6, 7);
+        //int desiredNum = 11;
+        //printPairs(sortedList, desiredNum);
+        
+        //ScriptEngineManager mgr = new ScriptEngineManager();
+        //ScriptEngine engine = mgr.getEngineByName("JavaScript");
+        //String foo = "40+2";
+        
+        
+        
+        
+        
+        int num = 20;
+        Integer intNum = 21;
+        char[] string = "this is char".toCharArray();
+        String stringString = "this is string";
+        
+        boolean check = true;
+        Boolean boolCheck = false;
+        PlayerCache cache = new PlayerCache(UUID.randomUUID());
+        
+        System.out.println("BEFORE");
+        System.out.println(num);
+        System.out.println(intNum);
+        System.out.println(string);
+        System.out.println(stringString);
+        System.out.println(check);
+        System.out.println(boolCheck);
+        System.out.println(cache.getUuid());
+        
+        changeAll(num, intNum, string, stringString, check, boolCheck, cache);
+        
+        System.out.println("AFTER");
+        System.out.println(num);
+        System.out.println(intNum);
+        System.out.println(string);
+        System.out.println(stringString);
+        System.out.println(check);
+        System.out.println(boolCheck);
+        System.out.println(cache.getUuid());
+        
+        
+        //System.out.println(new NumberUtility().isNumMath(foo) + "   "+ engine.eval(foo));
+    }
+    
+    private static void changeAll(int num, Integer intNum, char[] string, String stringString, boolean check,
+            Boolean boolCheck, PlayerCache cache)
+    {
+        num = 30;
+        intNum = 31;
+        string = "this is char after change".toCharArray();
+        stringString = "this is string after changed";
+        
+        check = false;
+        boolCheck = true;
+        cache.setUUID(UUID.randomUUID());;
+        
+    }
+
+    public void mm(List<Integer> sortedList, int desiredNum)
+    {
+        sortedList.stream().filter(num -> sortedList.indexOf(num)<sortedList.size()-1 ? num+sortedList.get(sortedList.indexOf(num)+1)==desiredNum : false).forEach(num -> System.out.print(num +" , "+sortedList.get(sortedList.indexOf(num)+1)));
+    }
+
+    public static ComboPlugin getInstance()
+    {
+        return instance;
+    }
+    
     public void onEnable()
-    {		
+    {
+        instance = this;
+        
         File ActionBarToggledir = new File(this.getDataFolder()+ File.separator+"Players");		
-        ActionBarToggledir.mkdir();		
+        ActionBarToggledir.mkdir();
+        
+        //File f = new File("src/x.txt");
+        //TO GET File from source folder, to make the first time YML for Actions of Warrior, Archer, Wizard, Tank
+        
+        initializePlaceholders();
 		
         getConfig().options().copyDefaults(true);
         saveConfig();		
@@ -94,8 +199,19 @@ public class ComboPlugin extends JavaPlugin
             	
         registerAllExecutables();
         registerAllRequirements();
-
+        
+        
+        
         getActionManager().registerActions(new File(this.getDataFolder()+ File.separator+"Actions"));
+        
+        setPlayerCacheManager(new PlayerCacheManager());
+    }
+
+    private void initializePlaceholders()
+    {
+        setFt(new FullTranslator());
+        setPt(new PlaceholderTranslator());
+        setCt(new ColorTranslator());        
     }
 
     public void onDisable()
@@ -125,6 +241,10 @@ public class ComboPlugin extends JavaPlugin
         getExecutableManager().register(new PlayerCommand());
         getExecutableManager().register(new PlayerMessage());
         
+        getExecutableManager().register(new PlayerPotionEffect());
+        getExecutableManager().register(new PlayePotionEffectAddTime());
+        getExecutableManager().register(new PlayerPotionEffectOverridable());
+
         getExecutableManager().register(new PlaySound());
     }
     
@@ -243,6 +363,38 @@ public class ComboPlugin extends JavaPlugin
 		return false;
 	}
 	*/
+
+    public PlaceholderTranslator getPt() {
+        return pt;
+    }
+
+    public void setPt(PlaceholderTranslator pt) {
+        this.pt = pt;
+    }
+
+    public ColorTranslator getCt() {
+        return ct;
+    }
+
+    public void setCt(ColorTranslator ct) {
+        this.ct = ct;
+    }
+
+    public FullTranslator getFt() {
+        return ft;
+    }
+
+    public void setFt(FullTranslator ft) {
+        this.ft = ft;
+    }
+
+    public PlayerCacheManager getPlayerCacheManager() {
+        return playerCacheManage;
+    }
+
+    public void setPlayerCacheManager(PlayerCacheManager playerCache) {
+        this.playerCacheManage = playerCache;
+    }
 
 	
 

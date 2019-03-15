@@ -43,4 +43,9 @@ public class SubActionManager
 		}
 		return subActions;		
 	}
+	
+	public boolean areSubActionsRight(List<SubAction> subs)
+	{
+	    return subs.stream().filter(sub -> sub.getComboType().toString().startsWith("SR") || sub.getComboType().toString().startsWith("R")).count()>0;
+	}
 }

@@ -43,7 +43,7 @@ public class ActionManager
 	
 	private List<Action> getActions(FileConfiguration file)
 	{
-		List<Action> acts = new ArrayList<Action>();		
+		List<Action> acts = new ArrayList<Action>();
 		
 		Set<String> names = file.getConfigurationSection("").getKeys(false);
 		if(names!=null)
@@ -58,7 +58,7 @@ public class ActionManager
             	
             	if(item==null)
             	{
-                    plugin.getLogger().log(Level.SEVERE, ChatColor.DARK_RED+"Invalid Item of "+name+" in file"+file.getName());
+                    plugin.getLogger().log(Level.SEVERE, ChatColor.DARK_RED+"Invalid Item of "+name+" in file "+file.getName());
                     continue;
             	}
             	
@@ -66,6 +66,9 @@ public class ActionManager
             	List<SubAction> subActions = plugin.getSubActionManager().getSubActions(file, name+".SubActions");
             	
             	Action action = new Action(name, item, globalReqs, subActions);
+            	
+            	action.setLeft(!plugin.getSubActionManager().areSubActionsRight(subActions));
+            	action.setRight(plugin.getSubActionManager().areSubActionsRight(subActions));
             	
             	acts.add(action);
             }
@@ -78,54 +81,61 @@ public class ActionManager
 	public void callAction(ComboType type, Player player, ItemStack item, boolean physical)
 	{		
 		List<Action> finalActs = getFinalActs(item);
-
+		//boolean addToPlayerCache = false;
+		
 		for(Action act : finalActs)
 		{
             SubAction subAct = act.getSubActionFromType(type);
             if(subAct!=null)
             {
             	if(plugin.getRequirementManager().passesRequirements(player, item, act.getGlobalRequirements()))
-            	{                    
+            	{
                     if(plugin.getRequirementManager().passesRequirements(player, item, physical, subAct.getRequirements()))
                     {
                         plugin.getRequirementManager().startCooldownTimer(act.getGlobalRequirements(), player);
                         plugin.getRequirementManager().startCooldownTimer(subAct.getRequirements(), player);
                         
                         plugin.getExecutableManager().executeExecutables(player, subAct.getAcceptance());
-                    }
+                        
+                        //plugin.getPlayerCache().addAction(player.getUniqueId(), act);
+                    }                
                     return;
             	}
-            }                        	
+            }
 		}
 	}
 
 	
-	public boolean actionRegisteredToItem(Player player, ItemStack item)
+	public boolean actionRegisteredToItem(Player player, ItemStack item, String act)
 	{
 		List<Action> finalActs = getFinalActs(item);
+		boolean isRight = act.equals("right");
 		
 		if(finalActs.size()>=1)
 		{
             Action action = finalActs.get(0);
-            if(action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).count()>=1)
+            
+            if((action.isRight() && isRight) || (action.isLeft() && !isRight))
             {
-            	for(Requirement req : action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).collect(Collectors.toList()))
-            	{
-                    if(!req.passesRequirement(player, item))
-                        return false;
-            	}
+                if(action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).count()>=1)
+                {
+                    for(Requirement req : action.getGlobalRequirements().stream().filter(req -> plugin.getRequirementManager().instanceOfItemRequirement(req)).collect(Collectors.toList()))
+                    {
+                        if(!req.passesRequirement(player, item))
+                            return false;
+                    }
+                }
+                return true;                
             }
-            return true;
 		}
 		return false;		
 	}
 	
-	public List<Action> getFinalActs(ItemStack item)
-	{
+	public List<Action> getFinalActs(ItemStack item) {
 		return getActions().stream().filter(act -> act.getItem().getType().equals(item.getType())).filter(act -> act.getItem().getDurability()==item.getDurability()).collect(Collectors.toList());
 	}
 	
-	private List<Action> getActions() {
+	public List<Action> getActions() {
 		return actions;
 	}
 	

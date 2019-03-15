@@ -20,6 +20,7 @@ public interface Requirement
 	
 	List<Executable> getDenial();
 	void setDenails(List<Executable> executables);
+	void runDeniables(Player player);
 	
 	boolean passesRequirement(Player player, ItemStack item);
 

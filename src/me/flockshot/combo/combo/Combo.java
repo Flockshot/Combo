@@ -21,6 +21,7 @@ public class Combo
 	private String thirdaction = "";
 	private boolean shift;
 	private boolean physical = false;
+	private boolean isRight = true;
 	private ComboType type;
 	private ComboPlugin plugin;
 	
@@ -37,9 +38,8 @@ public class Combo
 		PlayerPreComboEvent comboevent = new PlayerPreComboEvent(player, false);
 		Bukkit.getPluginManager().callEvent(comboevent);
 		if(comboevent.isCancelled())
-		{
 			plugin.getComboManager().removeComboinProgress(plr.getUniqueId());
-		}
+		
 	}
 
 	public Player getPlayer() {
@@ -101,13 +101,13 @@ public class Combo
 		if(comboevent.isCancelled())
 			return;
 		
-		processEvent();		
-	}
-	private void processEvent()
-	{
-		plugin.getActionManager().callAction(getType(), getPlayer(), getItem(), isPhysical());
+		processEvent();
 	}
 	
+	
+	private void processEvent()	{
+		plugin.getActionManager().callAction(getType(), getPlayer(), getItem(), isPhysical());
+	}
 	
 	public boolean isShift() {
 		return shift;
@@ -137,4 +137,11 @@ public class Combo
 	public void setPhysical(boolean physical) {
 		this.physical = physical;
 	}
+
+    public boolean isRight() {
+        return isRight;
+    }
+    public void setRight(boolean isRight) {
+        this.isRight = isRight;
+    }
 }

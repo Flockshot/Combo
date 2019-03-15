@@ -17,6 +17,8 @@ public class Action
 	private List<SubAction> actions;
 	private List<Requirement> globalReqs;
 	private HashMap<ComboType, SubAction> combos = new HashMap<ComboType, SubAction>(); 
+	private boolean isRight = false;
+	private boolean isLeft = false;
 	
 	public Action(String actionname, ItemStack item, List<Requirement> globalReqs, List<SubAction> actions)
 	{
@@ -62,6 +64,22 @@ public class Action
 	public void setGlobalRequirements(List<Requirement> reqs) {
 		globalReqs = reqs;
 	}
+
+    public boolean isRight() {
+        return isRight;
+    }
+
+    public void setRight(boolean isRight) {
+        this.isRight = isRight;
+    }
+
+    public boolean isLeft() {
+        return isLeft;
+    }
+
+    public void setLeft(boolean isLeft) {
+        this.isLeft = isLeft;
+    }
 		
 
 }

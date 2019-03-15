@@ -23,5 +23,6 @@ public class QuitEvent implements Listener
 		UUID uuid = event.getPlayer().getUniqueId();
 		plugin.getComboManager().removeComboinProgress(uuid);
 		plugin.getComboManager().removeTimer(uuid);
+		plugin.getPlayerCacheManager().removePlayer(event.getPlayer());
 	}
 }

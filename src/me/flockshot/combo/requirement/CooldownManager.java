@@ -22,18 +22,20 @@ public class CooldownManager
 	public long getCooldown(UUID uuid)
 	{
 		if(containsCooldown(uuid))
-		{
-			return cooldown.get(uuid);
-		}
-		else return 0;
+		    return cooldown.get(uuid);
+		
+		else return System.currentTimeMillis();
 	}
 	
 	public String getConvertedCooldown(UUID uuid)
-	{		
-		Date date = new Date(getTimePassed(uuid));
-		DateFormat formatter = new SimpleDateFormat("HH:mm:ss.SS");
+	{
+	    if(cooldownInMs-getTimePassed(uuid)<0)
+	        return "0s";
+	    
+		Date date = new Date(cooldownInMs-getTimePassed(uuid));
+		DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
 		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return formatter.format(date);		
+		return formatter.format(date);
 	}
 	
 	public long getTimePassed(UUID uuid) {
@@ -53,12 +55,13 @@ public class CooldownManager
 	public boolean cooldownPassed(UUID uuid)
 	{
 		if(containsCooldown(uuid))
-		{
-			if(getTimePassed(uuid)<cooldownInMs)
-			{			
+			if(getTimePassed(uuid)<cooldownInMs)		
 				return false;
+			else
+			{
+			    removeCooldown(uuid);
+			    return true;
 			}
-		}
 		return true;
 	}
 	

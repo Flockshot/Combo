@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 public class FullTranslator
 {
+
+    
 	public String getTranslatedString(Player player, String string)
 	{
 		ColorTranslator ct = new ColorTranslator();

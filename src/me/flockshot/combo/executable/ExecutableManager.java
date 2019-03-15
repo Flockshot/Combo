@@ -33,13 +33,20 @@ public class ExecutableManager
 				Executable executable = getFromIdentifier(name);
 				String value = getValueFromString(key);
 				
-				if(name==null || !executable.passesValidity(value))
+				if(name==null || executable ==null)
 				{
 					plugin.getLogger().log(Level.SEVERE, "§4Error: Skipping executable line ");
 					plugin.getLogger().log(Level.SEVERE, "§4"+key);
 					plugin.getLogger().log(Level.SEVERE, "§4in "+file.getName());
 					continue;
 				}
+				if(!executable.passesValidity(value))
+				{
+				    plugin.getLogger().log(Level.SEVERE, "§4Error: Skipping executable, "+key);
+				    plugin.getLogger().log(Level.SEVERE, "§4It does not passes validity ");
+				    continue;
+				}
+				
 				
 				executable.setValue(value);
 				executables.add(executable);

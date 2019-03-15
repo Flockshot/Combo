@@ -4,29 +4,19 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import me.flockshot.combo.executable.PlayerExecutable;
+import me.flockshot.combo.executable.UnknownExecutable;
 import me.flockshot.combo.utils.NumberUtility;
 import me.flockshot.combo.utils.PlaceholderTranslator;
 
-public class PlaySound implements PlayerExecutable
+public class PlaySound extends UnknownExecutable
 {
-
-	private String value = "";
 
 	@Override
 	public String getIdentifier() {
 		return "PlaySound";
 	}
 
-	@Override
-	public String getValue() {
-		return value;
-	}
-	@Override
-	public void setValue(String value) {
-		this.value = value;		
-	}
-	
+		
 	@Override
 	public boolean passesValidity(String value)
 	{
@@ -51,11 +41,12 @@ public class PlaySound implements PlayerExecutable
 	}
 
 	@Override
-	public void execute(Player player)
+	public void execute()
 	{
+	    Player player = getPlayerToExecute();
 		PlaceholderTranslator pt = new PlaceholderTranslator();
 		
-		String[] vals = pt.getTranslatedString(player, value).split(" ");
+		String[] vals = pt.getTranslatedString(player, getValue()).split(" ");
 		NumberUtility nUtil = new NumberUtility();
 		
 		if(nUtil.isNum(vals[1]) && nUtil.isNum(vals[2]) && nUtil.isNum(vals[3]))

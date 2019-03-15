@@ -28,58 +28,58 @@ public class ComboManager
 	    
 	    if(item != null && !item.getType().equals(Material.AIR))
 	    {
-	    	if(plugin.getActionManager().actionRegisteredToItem(player, item))
-	    	{
-	    		physical = !action.toLowerCase().equals("left");
-	    		action = action.replace("p", "");   		
-	    		
-	    		if(startedCombo.containsKey(uuid))
-		    	{
-		    		Combo plrCombo = startedCombo.get(uuid);
-		    		plrCombo.setPhysical(physical);
-		    		
-		    		if(plrCombo.isShift() != isShift || !playerTimer.get(uuid).passesTimers())
-		    		{
-		    			removeComboinProgress(uuid);
-		    			registerCombo(player, action, item, isShift);
-		    			return;
-		    		}		    	
-		    		
-		    		ItemMeta meta = item.getItemMeta();		    		
-		    		if(item.equals(plrCombo.getItem()) && plrCombo.getItemMeta().equals(meta))
-		    		{ 
-		    			soundManager.playSound(player);
+	        physical = !action.toLowerCase().equals("left");
+            action = action.replace("p", "");
+            
+            if(startedCombo.containsKey(uuid))
+            {
+                Combo plrCombo = startedCombo.get(uuid);
+                plrCombo.setPhysical(physical);
+                
+                if(plrCombo.isShift() != isShift || !playerTimer.get(uuid).passesTimers())
+                {
+                    removeComboinProgress(uuid);
+                    registerCombo(player, action, item, isShift);
+                    return;
+                }               
+                
+                ItemMeta meta = item.getItemMeta();                 
+                if(item.equals(plrCombo.getItem()) && plrCombo.getItemMeta().equals(meta))
+                { 
+                    soundManager.playSound(player);
 
-		    			if(plrCombo.getSecondAction().isEmpty())
-		    			{
-		    				plrCombo.setSecondAction(action);
-		    				startedCombo.put(uuid, plrCombo);
-		    				playerTimer.get(uuid).startSecondTimer();
-		            
-		    				plugin.getComboActionBar().preActionBar(player, "second", startedCombo.get(uuid));		    				
-		    			}
-		    			else
-		    			{
-		    				startedCombo.get(uuid).setThirdAction(action);
-		    				startedCombo.get(uuid).callEvent();
-		    				
-		    				plugin.getComboActionBar().preActionBar(player, "third", startedCombo.get(uuid));
-			    			removeComboinProgress(uuid);
-		    			}
-		    		}
-		    	}
-		    	else
-		    	{
-		    		Combo plrCombo = new Combo(plugin, player, item, action, isShift);
-		    		plrCombo.setPhysical(physical);
-		    		startedCombo.put(uuid, plrCombo);
-		    		
-		    		playerTimer.get(uuid).startFirstTimer();
-		    		
-		    		soundManager.playSound(player);	
-		    		plugin.getComboActionBar().preActionBar(player, "first", startedCombo.get(uuid));
-		    	}
-	    	}
+                    if(plrCombo.getSecondAction().isEmpty())
+                    {
+                        plrCombo.setSecondAction(action);
+                        startedCombo.put(uuid, plrCombo);
+                        playerTimer.get(uuid).startSecondTimer();
+                
+                        plugin.getComboActionBar().preActionBar(player, "second", startedCombo.get(uuid));                          
+                    }
+                    else
+                    {
+                        startedCombo.get(uuid).setThirdAction(action);
+                        startedCombo.get(uuid).callEvent();
+                        
+                        plugin.getComboActionBar().preActionBar(player, "third", startedCombo.get(uuid));
+                        removeComboinProgress(uuid);
+                    }
+                }
+            }
+            else
+            {
+                if(plugin.getActionManager().actionRegisteredToItem(player, item, action))
+                {
+                    Combo plrCombo = new Combo(plugin, player, item, action, isShift);
+                    plrCombo.setPhysical(physical);
+                    startedCombo.put(uuid, plrCombo);
+                    
+                    playerTimer.get(uuid).startFirstTimer();
+                    
+                    soundManager.playSound(player); 
+                    plugin.getComboActionBar().preActionBar(player, "first", startedCombo.get(uuid));
+                }
+            }
 	    }
 	}
 

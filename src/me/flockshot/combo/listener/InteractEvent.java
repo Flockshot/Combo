@@ -36,7 +36,7 @@ public class InteractEvent implements Listener
 					{
 						if(!plugin.getConfig().getBoolean("allowPhysical") && event.getAction().equals(Action.PHYSICAL))
 							return;
-						
+
 						action = event.getAction().equals(Action.PHYSICAL) ? "pleft" : "left";						
 					}
 					else
@@ -47,6 +47,5 @@ public class InteractEvent implements Listener
 				}
 			}
 		}
-
 	}
 }
