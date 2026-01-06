@@ -1,8 +1,8 @@
-# Combos
+# Combo
 
 ![Version](https://img.shields.io/badge/version-1.0-blue) ![API](https://img.shields.io/badge/API-Spigot-orange) ![License](https://img.shields.io/badge/license-MIT-green)
 
-**Combos** is a unique Spigot plugin that adds fighting-game style inputs to Minecraft. It allows players to execute specific sequences of actions (Left Click, Right Click, Shift) to trigger special effects, commands, or abilities.
+**Combo** is a unique Spigot plugin that adds fighting-game style inputs to Minecraft. It allows players to execute specific sequences of actions (Left Click, Right Click, Shift) to trigger special effects, commands, or abilities.
 
 Instead of remembering complex commands, players can discover "exiting new ways to survive" by mastering physical combinations.
 
@@ -29,10 +29,6 @@ Since this project is open-source, you will need to build the artifact from the 
 
 ### Steps
 1.  **Clone the Repository:**
-    ```bash
-    git clone [https://github.com/yourusername/Combos.git](https://github.com/yourusername/Combos.git)
-    cd Combos
-    ```
 
 2.  **Compile the Plugin:**
     Run the following Maven command to clean and package the project:
@@ -96,9 +92,6 @@ soundPitch: 0
 ## 🔗 Developer API
 
 Developers can hook into the Combo system using the provided events.
-
-### Maven Dependency
-(Add instructions here if you host a repo, otherwise point to local installation)
 
 ### Example Listener
 ```java
